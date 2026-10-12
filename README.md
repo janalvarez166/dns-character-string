@@ -31,3 +31,10 @@ The length octet caps a single string at 255 bytes; `encodeCharacterString` thro
 - `decodeCharacterString(buf: Buffer, start = 0): { value: Buffer, next: number, length: number }` — read one string starting at `start`; `next` is the offset just past it.
 
 ESM only. Node's `Buffer` from `node:buffer` is the only dependency.
+
+## Design notes
+
+The window stores values eagerly rather than keeping running aggregates. Running
+sums drift with floating point over long streams, and recomputing from a small
+buffer is cheap enough that the drift is not worth the speed.
+
